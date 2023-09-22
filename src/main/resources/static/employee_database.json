@@ -48,6 +48,18 @@
     "firstName" : "George",
     "lastName" : "Harrison",
     "position" : "Developer III",
-    "department" : "Engineering"
+    "department" : "Engineering",
+    "directReports" : [
+      {
+        "employeeId": "e7ce7a26-bfc6-431b-900f-7098acfa0f5e"
+      }
+    ]
+  },
+  {
+    "employeeId" : "e7ce7a26-bfc6-431b-900f-7098acfa0f5e",
+    "firstName" : "Yoko",
+    "lastName" : "Ono",
+    "position" : "???",
+    "department" : "Marketing"
   }
 ]

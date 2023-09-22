@@ -27,5 +27,6 @@ dependencies {
 	implementation ('org.springframework.boot:spring-boot-starter-web')
 	implementation ('org.springframework.boot:spring-boot-starter-data-mongodb')
 	testImplementation ('org.springframework.boot:spring-boot-starter-test')
-	implementation (group: 'de.bwaldvogel', name: 'mongo-java-server', version: '1.25.0')
+	// mongo-java-server (even latest) does not appear to support $graphLookup, so use embedded mongo instead
+	implementation('de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.9.2')
 }
