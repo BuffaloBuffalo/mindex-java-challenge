@@ -26,5 +26,6 @@ public class DataBootstrapTest {
         assertEquals("Lennon", employee.getLastName());
         assertEquals("Development Manager", employee.getPosition());
         assertEquals("Engineering", employee.getDepartment());
+        assertEquals(2, employee.getDirectReports().size());
     }
 }

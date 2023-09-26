@@ -3,8 +3,12 @@ package com.mindex.challenge.config;
 import com.mindex.challenge.dao.EmployeeRepository;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import de.bwaldvogel.mongo.MongoServer;
-import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
+import de.flapdoodle.embed.mongo.distribution.Version;
+import de.flapdoodle.embed.mongo.transitions.Mongod;
+import de.flapdoodle.embed.mongo.transitions.RunningMongodProcess;
+import de.flapdoodle.reverse.StateID;
+import de.flapdoodle.reverse.TransitionWalker;
+import de.flapdoodle.reverse.Transitions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDbFactory;
@@ -24,17 +28,13 @@ public class MongoConfig{
     public MongoDbFactory mongoDbFactory(MongoClient mongoClient) {
         return new SimpleMongoClientDbFactory(mongoClient, "test");
     }
-
-    @Bean(destroyMethod="shutdown")
-    public MongoServer mongoServer() {
-        MongoServer mongoServer = new MongoServer(new MemoryBackend());
-        mongoServer.bind();
-        return mongoServer;
-    }
-
-    @Bean(destroyMethod="close")
-    public MongoClient mongoClient() {
-        return MongoClients.create("mongodb:/" + mongoServer().getLocalAddress());
+    @Bean(destroyMethod = "close")
+    public MongoClient mongoClient(){
+        Transitions transitions = Mongod.instance().transitions(Version.Main.V4_4);
+        TransitionWalker.ReachedState<RunningMongodProcess> running = transitions.walker()
+                .initState(StateID.of(RunningMongodProcess.class));
+        String address = running.current().getServerAddress().toString();
+        return MongoClients.create("mongodb://" + address);
     }
 }
 
